@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "65ddacfd-0173-4fe9-8b28-abd33726e09f",
+		"name": "Simple Project with Spring Authorization Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16776059"
+	},
+	"item": [
+		{
+			"name": "Resource Server",
+			"item": [
+				{
+					"name": "Endpoint protected with Access Token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access-token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{resource-server-url}}/cars",
+							"host": [
+								"{{resource-server-url}}"
+							],
+							"path": [
+								"cars"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorization Server",
+			"item": [
+				{
+					"name": "Get Authorization Code",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{auth-server-url}}/oauth2/authorize?response_type=code&client_id=angular&state=abc&redirect_uri=https://oidcdebugger.com/debug&code_challenge=OL15DHPIkhhbLN5fAQfccdpxuZkwP2lLqsac_w8Ye94&code_challenge_method=S256&scope=read+write",
+							"host": [
+								"{{auth-server-url}}"
+							],
+							"path": [
+								"oauth2",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
+									"key": "client_id",
+									"value": "angular"
+								},
+								{
+									"key": "state",
+									"value": "abc"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://oidcdebugger.com/debug"
+								},
+								{
+									"key": "code_challenge",
+									"value": "OL15DHPIkhhbLN5fAQfccdpxuZkwP2lLqsac_w8Ye94"
+								},
+								{
+									"key": "code_challenge_method",
+									"value": "S256"
+								},
+								{
+									"key": "scope",
+									"value": "read+write"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get new Access Token and Refresh Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "@ngul@r0",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "angular",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "code",
+									"value": "Bu3BnrYdGDVjBLuVA3tQcIo_OcftdKCDJmrW88mL9WPUfgtlh6IwlL5HCxmc1wcR-iMvPvJc-RE8NrQMsyhsQD6Tt45cPYGLug0x8xGXNmB7k_bd36b85hCiv4CQsSd8",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://oidcdebugger.com/debug",
+									"type": "text"
+								},
+								{
+									"key": "code_verifier",
+									"value": "JFmEuFAX3ayWXryHw3VTV1mcz9WY7QfZ9tomyV5CozT6s9Rbrw3cfc4PWN8bXqF.AXCrZfSYaqCN6Kgh.OQG~fdoHcFp~e9bnuHqfoGyfSJ3Vga0.pn871oAeCgS6VJI",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "angular",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{auth-server-url}}/oauth2/token",
+							"host": [
+								"{{auth-server-url}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JWKS endpoint with fields to read Public Key (e and n)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{auth-server-url}}/oauth2/jwks",
+							"host": [
+								"{{auth-server-url}}"
+							],
+							"path": [
+								"oauth2",
+								"jwks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Access Token with Refresh Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{auth-server-url}}/oauth2/token?refresh_token={{refresh-token}}&client_id=angular&grant_type=refresh_token",
+							"host": [
+								"{{auth-server-url}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							],
+							"query": [
+								{
+									"key": "refresh_token",
+									"value": "{{refresh-token}}"
+								},
+								{
+									"key": "client_id",
+									"value": "angular"
+								},
+								{
+									"key": "grant_type",
+									"value": "refresh_token"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
